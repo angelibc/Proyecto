@@ -49,4 +49,7 @@ class Distribuidora extends Model
     public function afilial(): HasOne{
         return $this->hasOne(Afilial::class,'distribuidor_id');
     }
+    public function relacion(): HasMany{
+        return $this->hasMany(Relacion::class,'distribuidor_id');
+    }
 }
