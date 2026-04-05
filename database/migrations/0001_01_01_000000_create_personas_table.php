@@ -19,8 +19,8 @@ return new class extends Migration
             $table->date('fecha_nacimiento');
             $table->string('CURP')->unique();
             $table->string('RFC')->unique();
-            $table->integer('telefono_personal')->unique();
-            $table->integer('celular')->unique();
+            $table->string('telefono_personal',15)->unique();
+            $table->string('celular',15)->unique();
             $table->rememberToken();
             $table->timestamps();
         });

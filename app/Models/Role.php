@@ -11,4 +11,8 @@ class Role extends Model
     protected $fillable = [
         'role',
     ];
+
+    public function usuario(): HasOne{
+        return $this->hasOne(User::class,'role_id');
+    }
 }
