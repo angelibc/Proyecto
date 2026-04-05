@@ -9,6 +9,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ValesController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\DatosFamiliaresController;
+use App\Http\Controllers\DatosVehiculosController;
+use App\Http\Controllers\AfilialesController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -29,7 +32,20 @@ Route::post('/crearVale',[ValesController::class,'crearPrevale']);
 Route::post('/crearCliente',[ClientesController::class,'crearCliente']);
 //RUTA PARA QUE EL COORDINADOR CREE UN PRODUCTO
 Route::post('/crearProducto',[ProductosController::class,'crearProducto']);
+//RUTA PARA CREAR A LOS FAMILIAR DE UNA DISTRIBUIDORA
+Route::post('/crearDatoFamilia',[DatosFamiliaresController::class,'crearDatoFamiliar']);
 
+Route::post('/crearVehiculo',[DatosVehiculosController::class,'crearVehiculo']);
+
+Route::post('/crearAfilial',[AfilialesController::class,'crearAfilial']);
+
+
+
+
+
+
+
+Route::get('/distribuidoras-detalle', [DistribuidorasController::class, 'obtenerDetalleDistribuidoras']);
 
 // Route::middleware('auth:sanctum')->group(function () {
     

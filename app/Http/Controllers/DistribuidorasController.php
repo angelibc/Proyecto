@@ -11,6 +11,26 @@ use Illuminate\Http\Request;
 
 class DistribuidorasController
 {
+    public function obtenerDetalleDistribuidoras()
+    {
+        // Usamos with() para cargar las relaciones de golpe
+        // Si tus modelos tienen estos nombres de funciones, funcionará:
+        $distribuidoras = Distribuidora::with([
+            'usuario.persona', // Trae el usuario y su info personal
+            'usuario.role',    // Trae el rol del usuario
+            'categoria',       // Trae la categoría (Bronce, Plata, Oro)
+            'familiar.persona', // Trae el familiar y su info personal
+            'vehiculo',
+            'afilial'
+        ])->get();
+
+        // Retornamos la colección para verla en Postman
+        return response()->json([
+            'mensaje' => 'Lista de distribuidoras con relaciones',
+            'cantidad' => $distribuidoras->count(),
+            'data' => $distribuidoras
+        ], 200);
+    }
     public function crearDistribuidora(Request $request){
         $datos = $request->validate([
             'nombre'            => 'required|string|max:100',

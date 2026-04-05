@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 
 class Distribuidora extends Model
 {
@@ -38,5 +40,13 @@ class Distribuidora extends Model
 
     public function familiar(): HasMany{
         return $this->hasMany(DatoFamilia::class,'distribuidor_id');
+    }
+
+    public function vehiculo(): HasOne{
+        return $this->hasOne(DatoVehiculo::class,'distribuidor_id');
+    }
+
+    public function afilial(): HasOne{
+        return $this->hasOne(Afilial::class,'distribuidor_id');
     }
 }

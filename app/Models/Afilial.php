@@ -5,21 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DatoFamilia extends Model
+class Afilial extends Model
 {
-    protected $table = 'datos_familiares';
+    protected $table = 'afiliales';
 
     protected $fillable = [
         'distribuidor_id',
-        'parentesco',
-        'persona_id',
+        'nombre',
+        'antiguedad',
+        'linea_credito'
     ];
 
     public function distribuidora(): BelongsTo{
         return $this->belongsTo(Distribuidora::class,'distribuidor_id');
-    }
-
-    public function persona(): BelongsTo{
-        return $this->belongsTo(Persona::class,'persona_id');
     }
 }

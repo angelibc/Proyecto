@@ -10,3 +10,4 @@ Route::get('/', function () {
 //LISTA DE TODOS LOS ROLES
 Route::get('/roles',[RolesController::class,'listaDeRoles']);
 
+
