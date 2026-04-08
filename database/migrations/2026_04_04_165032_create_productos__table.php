@@ -18,7 +18,6 @@ return new class extends Migration
             $table->decimal('seguro', 10, 2)->default(0);            
             $table->integer('quincenas');            
             $table->decimal('interes_quincenal', 5, 2)->default(0);            
-            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

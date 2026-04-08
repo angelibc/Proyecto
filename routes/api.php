@@ -34,13 +34,15 @@ Route::post('/crearCliente',[ClientesController::class,'crearCliente']);
 Route::post('/crear/producto',[ProductosController::class,'crearProducto']);
 //RUTA PARA CREAR A LOS FAMILIAR DE UNA DISTRIBUIDORA
 Route::post('/crearDatoFamilia',[DatosFamiliaresController::class,'crearDatoFamiliar']);
-
+//Ruta para crear un vehiculo a una distribuidora
 Route::post('/crearVehiculo',[DatosVehiculosController::class,'crearVehiculo']);
-
+//Ruta para crear un afiliar a una distribuidora
 Route::post('/crearAfilial',[AfilialesController::class,'crearAfilial']);
-
+//Ruta para mostrar la lista de lo productos
 Route::get('/lista/productos',[ProductosController::class,'listaProductos']);
 
+//Ruta para editar un producto por su ID utilizando patch para campos parciales
+Route::patch('/editar/producto/{id}',[ProductosController::class,'editarProducto']);
 
 
 

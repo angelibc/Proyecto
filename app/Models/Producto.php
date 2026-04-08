@@ -16,7 +16,6 @@ class Producto extends Model
         'seguro',
         'quincenas',
         'interes_quincenal',
-        'activo'
     ];
 
     public function vale(): HasMany{

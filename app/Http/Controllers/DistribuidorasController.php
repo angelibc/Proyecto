@@ -11,6 +11,17 @@ use Illuminate\Http\Request;
 
 class DistribuidorasController
 {
+    public function listaDistribuidoras(){
+        $distribuidoras = Distribuidora::with([
+            'usuario.persona',
+        ]);
+
+        return response()->json([
+            'mensaje' => 'Lista de distribuidoras',
+            'distribuidoras' => $distribuidoras
+        ],200);
+    }
+
     public function obtenerDetalleDistribuidoras()
     {
         // Usamos with() para cargar las relaciones de golpe
