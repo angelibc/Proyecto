@@ -288,6 +288,7 @@
             <nav>
                 <ul class="menu-nav">
                     <li><a href="#" onclick="cargarVista('productos', this)">Productos</a></li>
+                    <li><a href="#" onclick="cargarVista('productos', this)">Distribuidoras</a></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display:none;">
                             @csrf
@@ -334,7 +335,7 @@
         if (nombre === 'productos') {
             cargarProductos();
         }
-        if(nombre === 'configuracion'){
+        if(nombre === 'distribuidoras'){
             cargarProductos();
         }
     }
