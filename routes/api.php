@@ -30,9 +30,6 @@ Route::post('/crear/usuario',[UsersController::class,'crearUsuario']);
 Route::post('/crear/distribuidora',[DistribuidorasController::class,'crearDistribuidora']);
 //RUTA PRAA INICIAR SESION
 Route::post('/login', [AuthController::class,'iniciarSesion']);
-
-
-
 //RUTA PARA CREAR UN VALE
 Route::post('/crear/vale',[ValesController::class,'crearPrevale']);
 //RUTA PARA CREAR UN CLIENTE
@@ -61,3 +58,7 @@ Route::post('/crear/relacion',[RelacionesController::class,'crearRelacion']);
 Route::get('lista/relaciones',[RelacionesController::class,'listaRelaciones']);
 //Ruta de todos los vales creados 
 Route::get('lista/vales',[ValesController::class,'listaVales']);
+//Ruta para lista de todos los clientes 
+Route::get('lista/clientes',[ClientesController::class,'listaClientes']);
+//Ruta de todos los clientes por id de distribuidora
+Route::get('clientes/distribuidora/{id}',[ClientesController::class,'clientesDistribuidora']);

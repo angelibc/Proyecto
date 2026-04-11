@@ -11,11 +11,7 @@ class ProductosController
 {
     public function listaProductos(){
         $productos = Producto::all();
-
-        return response()->json([
-            'mensaje' => 'Lista de productos',
-            'productos' => $productos
-        ],200);
+        return view('distribuidora.productos', compact('productos'));
     }
 
 

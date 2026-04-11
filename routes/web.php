@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\DistribuidorasController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,10 +13,19 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/distribuidoras/dashboard', function (){
-    return view('distribuidor.distribuidora');
-});
+Route::get('/distribuidora/dashboard', function (){
+    return view('distribuidora.distribuidora');
+})->name('distribuidora.dashboard');
 
+Route::get('/distribuidora/clientes', function () {
+    return view('distribuidora.clientes');
+})->name('clientes.index');
+
+Route::get('/distribuidora/prevale',function(){
+    return view('distribuidora.prevale');
+})->name('prevale');
+
+Route::get('/distribuidora/productos', [ProductosController::class, 'listaProductos'])->name('productos');
 
 Route::middleware('auth')->group(function () {
 
