@@ -46,8 +46,8 @@
         </h1>
     </div>
     <div class="box-2">
-        <div>
-            
+        <div class="">
+
         </div>
     </div>
 </body>
