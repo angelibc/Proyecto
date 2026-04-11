@@ -26,7 +26,7 @@ class ValesController
             // Datos Persona
             'nombre'            => 'required|string|max:100',
             'apellido'          => 'required|string|max:100',
-            'sexo'              => 'required|in:H,M,O',
+            'sexo'              => 'required|in:F,M,O',
             'fecha_nacimiento'  => 'required|date',
             'CURP'              => 'required|string|size:18|unique:personas,CURP',
             'RFC'               => 'required|string|size:13|unique:personas,RFC',
