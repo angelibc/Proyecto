@@ -3,252 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presolicitud - Prevale</title>
+    <title>Nueva Distribuidora - Préstamo Fácil</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #305be3;
+            --dark: #111827;
+            --bg: #f4f7f6;
+            --border: #e5e7eb;
+            --text-main: #374151;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); }
+
+        .barra {
+            padding: 10px 30px;
+            display: flex;
+            align-items: center;
+            background: var(--dark);
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .pf-logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.2rem; color: white; }
+        .pf-logo-box { background: var(--primary); color: white; padding: 6px 12px; border-radius: 8px; }
+
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        
+        form {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 0.85rem; font-weight: 600; color: #6b7280; }
+        
+        input, select {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus { outline: none; border-color: var(--primary); ring: 2px solid #305be333; }
+
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover { background: #2548b8; }
+    </style>
 </head>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
-    }
-    body, html {
-        width: 100%;
-        height: 100%;
-        background-color: #f4f7f6;
-    }
-    .barra {
-        padding: 15px 30px;
-        display: flex;
-        align-items: center;
-        background: #111827;
-        gap: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .barra img {
-        width: 60px;
-        height: 60px;
-        border-radius: 8px;
-        object-fit: cover;
-    }
-    .barra h1 {
-        color: white;
-        font-weight: 700;
-        font-size: 1.5rem;
-    }
-
-    /* Contenedor del Formulario */
-    .container {
-        max-width: 90%;
-        margin: 40px auto;
-        background: white;
-        padding: 40px;
-        border-radius: 16px;
-        shadow: 0 4px 20px rgba(0,0,0,0.05);
-    }
-
-    .form-section {
-        margin-bottom: 30px;
-    }
-
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #f3f4f6;
-    }
-
-    /* Grid del Formulario */
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    /* En móviles, una sola columna */
-    @media (max-width: 600px) {
-        .form-grid { grid-template-columns: 1fr; }
-    }
-
-    .field-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    label {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #4b5563;
-    }
-
-    input, select {
-        padding: 12px 16px;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        outline: none;
-        transition: all 0.2s;
-        font-size: 0.95rem;
-    }
-
-    input:focus, select:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    .btn-submit {
-        background: #2563eb;
-        color: white;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 20px;
-        transition: background 0.3s;
-    }
-
-    .btn-submit:hover {
-        background: #1d4ed8;
-    }
-    .pf-header {
-        background: #111827;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid var(--pf-border);
-    }
-
-    .pf-logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 800;
-        font-size: 1.4rem;
-        color: white;
-    }
-
-    .pf-logo-box {
-        background: #305be3;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 8px;
-    }
-
-    /* Estilo para campos ocultos */
-    .hidden { display: none; }
-</style>
 <body>
-   <div class="barra">
-        <header class="pf-header">
-            <div class="pf-logo">
-                <div class="pf-logo-box">PF</div>
-                Préstamo Fácil
-            </div>
-        </header>
-        </a>
-
-        <a href="{{ route('dashboard') }}" style="margin-left: auto; color: white; text-decoration: none; font-size: 0.95rem; padding: 5px 12px; border-radius: 6px; transition: all 0.2s;" onmouseover="this.style.color='white'; this.style.borderColor='white'" onmouseout="this.style.color='#9ca3af'; this.style.borderColor='#374151'">
+    <div class="barra">
+        <div class="pf-logo">
+            <div class="pf-logo-box">PF</div>
+            Préstamo Fácil
+        </div>
+        <a href="{{ route('dashboard') }}" style="color: #9ca3af; text-decoration: none; font-size: 0.95rem;">
             ← Volver al Dashboard
         </a>
     </div>
+
     <div class="container">
-        <form action="{{ route('distribuidoras.store') }}" method="POST">
+        <form action="{{ route('distribuidoras.create') }}" method="POST">
             @csrf
 
-            <div class="form-section">
-                <h3 class="section-title">Información Personal</h3>
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label>Nombre</label>
-                        <input type="text" name="nombre" placeholder="Juan Carlos" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Apellido</label>
-                        <input type="text" name="apellido" placeholder="Rodríguez" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Sexo</label>
-                        <select name="sexo">
-                            <option value="M">Masculino</option>
-                            <option value="F">Femenino</option>
-                            <option value="O">Otro</option>
-                        </select>
-                    </div>
-                    <div class="field-group">
-                        <label>Fecha de Nacimiento</label>
-                        <input type="date" name="fecha_nacimiento" required>
-                    </div>
-                    <div class="field-group">
-                        <label>CURP</label>
-                        <input type="text" name="CURP" placeholder="CURP de 18 dígitos" maxlength="18" style="text-transform:uppercase">
-                    </div>
-                    <div class="field-group">
-                        <label>RFC</label>
-                        <input type="text" name="RFC" placeholder="RFC de 13 dígitos" maxlength="13" style="text-transform:uppercase">
-                    </div>
+            <h3 class="section-title">Datos del Titular</h3>
+            <div class="grid">
+                <div class="form-group">
+                    <label>Nombre(s)</label>
+                    <input type="text" name="persona[nombre]" required placeholder="Ej: Kory">
                 </div>
-            </div>
-            <div class="form-section">
-                <h3 class="section-title">Contacto y Acceso</h3>
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label>Email (Usuario)</label>
-                        <input type="email" name="email" placeholder="correo@ejemplo.com" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Contraseña</label>
-                        <input type="password" name="password" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Teléfono Personal</label>
-                        <input type="text" name="telefono_personal">
-                    </div>
-                    <div class="field-group">
-                        <label>Celular</label>
-                        <input type="text" name="celular">
-                    </div>
+                <div class="form-group">
+                    <label>Apellido(s)</label>
+                    <input type="text" name="persona[apellido]" required placeholder="Ej: Panzona">
+                </div>
+                <div class="form-group">
+                    <label>Sexo</label>
+                    <select name="persona[sexo]" required>
+                        <option value="F">Femenino</option>
+                        <option value="M">Masculino</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" name="persona[fecha_nacimiento]" required>
+                </div>
+                <div class="form-group">
+                    <label>CURP</label>
+                    <input type="text" name="persona[CURP]" required maxlength="18">
+                </div>
+                <div class="form-group">
+                    <label>RFC</label>
+                    <input type="text" name="persona[RFC]" maxlength="13">
+                </div>
+                <div class="form-group">
+                    <label>Celular</label>
+                    <input type="text" name="persona[celular]" required>
                 </div>
             </div>
 
-            <div class="form-section">
-                <h3 class="section-title">Datos de Sistema y Crédito</h3>
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label>Línea de Crédito ($)</label>
-                        <input type="number" name="linea_credito" step="0.01" placeholder="15000.00">
+            <h3 class="section-title">Configuración de Cuenta</h3>
+            <div class="grid">
+                <div class="form-group">
+                    <label>Email Access</label>
+                    <input type="email" name="usuario[email]" required placeholder="correo@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="usuario[password]" required>
+                </div>
+                <div class="form-group">
+                    <label>Línea de Crédito</label>
+                    <input type="number" step="0.01" name="distribuidora[linea_credito]" required>
+                </div>
+                <input type="hidden" name="usuario[sucursal_id]" value="1">
+                <input type="hidden" name="usuario[role_id]" value="4">
+                <input type="hidden" name="distribuidora[categoria_id]" value="1">
+                <input type="hidden" name="distribuidora[estado]" value="activo">
+                <input type="hidden" name="distribuidora[puntos]" value="0">
+                <input type="hidden" name="distribuidora[geolocalizacion_lat]" value="25.5438">
+                <input type="hidden" name="distribuidora[geolocalizacion_lng]" value="-103.4189">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3 class="section-title">Datos del Familiar</h3>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Nombre Familiar</label>
+                        <input type="text" name="familiar[nombre]" required>
                     </div>
-                    <div class="field-group">
-                        <label>Sucursal ID</label>
-                        <input type="number" name="sucursal_id" value="1">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Parentesco</label>
+                        <input type="text" name="familiar[parentesco]" required placeholder="Ej: Esposo">
                     </div>
-                    <div class="field-group">
-                        <label>Categoría ID</label>
-                        <input type="number" name="categoria_id" value="1">
+                    <input type="hidden" name="familiar[apellido]" value="Cambiame">
+                    <input type="hidden" name="familiar[sexo]" value="M">
+                    <input type="hidden" name="familiar[fecha_nacimiento]" value="1990-01-01">
+                    <input type="hidden" name="familiar[CURP]" value="TEMP123456HDFRRN01">
+                    <input type="hidden" name="familiar[celular]" value="0000000000">
+                </div>
+
+                <div>
+                    <h3 class="section-title">Datos del Vehículo</h3>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Marca</label>
+                        <input type="text" name="vehiculo[marca]" required>
                     </div>
-                    <div class="field-group">
-                        <label>Estado</label>
-                        <select name="estado">
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
-                        </select>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Placas</label>
+                        <input type="text" name="vehiculo[numero_placas]" required>
                     </div>
+                    <input type="hidden" name="vehiculo[modelo]" value="Pendiente">
+                    <input type="hidden" name="vehiculo[color]" value="Pendiente">
                 </div>
             </div>
 
-            <input type="hidden" name="role_id" value=4>
-            <input type="hidden" name="puntos" value=0>
-            <input type="hidden" name="geolocalizacion_lat" value="25.54389">
-            <input type="hidden" name="geolocalizacion_lng" value="-103.41898">
+            <h3 class="section-title">Datos de la Filial</h3>
+            <div class="grid">
+                <div class="form-group">
+                    <label>Nombre Filial</label>
+                    <input type="text" name="afilial[nombre]" required>
+                </div>
+                <div class="form-group">
+                    <label>Antigüedad (Años)</label>
+                    <input type="number" name="afilial[antiguedad]" required>
+                </div>
+                <div class="form-group">
+                    <label>Línea Filial</label>
+                    <input type="number" step="0.01" name="afilial[linea_credito]" required>
+                </div>
+            </div>
 
-            <button type="submit" class="btn-submit">
-                Guardar Presolicitud
-            </button>
+            <button type="submit" class="btn-submit">Registrar Nueva Distribuidora</button>
         </form>
     </div>
 </body>
