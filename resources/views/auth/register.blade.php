@@ -135,7 +135,7 @@
             <div class="pf-logo-box">PF</div>
             Préstamo Fácil
         </div>
-        <a href="{{ route('dashboard') }}" style="color: #9ca3af; text-decoration: none; font-size: 0.95rem;">
+        <a href="{{ route('gerente.dashboard') }}" style="color: #9ca3af; text-decoration: none; font-size: 0.95rem;">
             ← Volver al Dashboard
         </a>
     </div>
