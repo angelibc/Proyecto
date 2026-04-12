@@ -22,13 +22,29 @@ Route::middleware(['auth', SoloDistribuidoras::class])->group(function () {
         return view('distribuidora.distribuidora');
     })->name('distribuidora.dashboard');
 
-    Route::get('/distribuidora/clientes', function () {
+    Route::get('/distribuidora/clientes', function (){
         return view('distribuidora.clientes');
     })->name('clientes.index');
 
-    Route::get('/distribuidora/productos', [ProductosController::class, 'listaProductos'])->name('productos');
+    Route::get('/distribuidora/vales',function(){
+        return view('distribuidora.vales');
+    })->name('distribuidora.vale');
 
+    Route::get('/distribuidora/productos', [ProductosController::class, 'listaProductos'])->name('productos');
 });
+
+
+//RUTA QUE SON PARA GERENTES
+Route::get('/gerente/productos', [ProductosController::class, 'listaProductos'])->name('gerente.productos');
+//RUTA DE TODAS LAS DISTRIBUIDORAS 
+Route::get('/gerente/distribuidora',[DistribuidorasController::class,'listaDistribuidoras'])->name('gerente.distribuidoras');
+
+
+
+
+
+
+
 
 Route::middleware('auth')->group(function () {
 

@@ -104,6 +104,10 @@
                 <span>icon</span>
                 <h1 style="color:white;">Ajustes</h1>
             </a>
+            <a href="{{ route('distribuidora.vale') }}" class="option-btn" style="background:orange">
+                <span>icon</span>
+                <h1 style="color:white;">Vales</h1>
+            </a>
             <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display:none;">
                 @csrf
             </form>

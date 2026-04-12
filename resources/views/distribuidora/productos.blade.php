@@ -143,7 +143,6 @@
             @endforeach
         </div>
     </div>
-</div>
 <div id="modalPrevale" class="modal">
     <div class="modal-content" style="max-width: 800px;"> <h2 style="margin-bottom: 20px;">Registro de Vale</h2>
         

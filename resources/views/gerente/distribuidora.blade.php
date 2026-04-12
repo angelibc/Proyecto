@@ -54,18 +54,7 @@
 <body>
     <div class="dashboard-container">
         <x-aside-bar/>
-        <main class="contenido">
-            <h1>
-                Bienvenido al Panel
-                <span style="text-transform: capitalize;">
-                    {{ auth()->user()->persona->nombre }}!!
-                </span>
-            </h1>
-
-            <div class="panel" id="panel-contenido">
-                <p class="loading">Selecciona una opción del menú.</p>
-            </div>
-        </main>
+        hola
     </div>
 </body>
 </html>

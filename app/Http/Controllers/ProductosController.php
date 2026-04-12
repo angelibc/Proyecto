@@ -11,7 +11,11 @@ class ProductosController
 {
     public function listaProductos(){
         $productos = Producto::all();
-        return view('distribuidora.productos', compact('productos'));
+        return match(auth()->user()->role_id) {
+            4 => view('distribuidora.productos', compact('productos')),  // distribuidor
+            1 => view('gerente.productos', compact('productos')),        // gerente
+            default => abort(403, 'No tienes acceso.')
+        };
     }
 
 

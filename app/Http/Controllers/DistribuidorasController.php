@@ -19,6 +19,12 @@ class DistribuidorasController
             'mensaje' => 'Lista de distribuidoras',
             'distribuidoras' => $distribuidoras
         ],200);
+
+        return match(auth()->user()->role_id) {
+            4 => view('distribuidora.productos', compact('productos')),  // distribuidor
+            1 => view('gerente.productos', compact('productos')),        // gerente
+            default => abort(403, 'No tienes acceso.')
+        };
     }
 
     public function obtenerDetalleDistribuidoras()

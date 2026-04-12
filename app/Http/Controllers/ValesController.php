@@ -18,7 +18,6 @@ class ValesController
         ],200);
     }
 
-
     public function crearPrevale(Request $request)
     {
         // 1. Validamos TODO (Datos de Persona, Cliente y Vale)
