@@ -27,6 +27,26 @@ class DistribuidorasController
         };
     }
 
+    public function distribuidorasInactivas(){
+        $distribuidoras = Distribuidora::where('estado', 'inactivo')->with('usuario.persona')->get();
+
+        return view('verificador.notificaciones', compact('distribuidoras'));
+        // return response()->json([
+        //     'mensaje' => 'exito!',
+        //     'distribuidoras' => $distribuidoras
+        // ],200);
+    }
+
+    public function detalle($id)
+    {
+        $distribuidora = Distribuidora::where('id', $id)
+            ->with('usuario.persona')
+            ->firstOrFail();
+
+        return view('verificador.datos-distribuidora', compact('distribuidora'));
+    }
+
+
     public function obtenerDetalleDistribuidoras()
     {
         // Usamos with() para cargar las relaciones de golpe
@@ -174,5 +194,16 @@ class DistribuidorasController
                 'mensaje' => 'Error al crear la distribuidora: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function activarDistribuidora($id)
+    {
+        $distribuidora = Distribuidora::findOrFail($id);
+        $distribuidora->update(['estado' => 'activo']);
+
+        return response()->json([
+            'res' => true,
+            'mensaje' => 'Distribuidora activada correctamente'
+        ], 200);
     }
 }

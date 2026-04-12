@@ -18,8 +18,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', SoloDistribuidoras::class])->group(function () {
     
-    Route::get('/distribuidora/dashboard', function (){
-        return view('distribuidora.distribuidora');
+    Route::get('dashboard', function (){
+        return view('distribuidora.dashboard');
     })->name('distribuidora.dashboard');
 
     Route::get('/distribuidora/clientes', function (){
@@ -31,7 +31,13 @@ Route::middleware(['auth', SoloDistribuidoras::class])->group(function () {
     })->name('distribuidora.vale');
 
     Route::get('/distribuidora/productos', [ProductosController::class, 'listaProductos'])->name('productos');
+
+    Route::get('/verificador/notificaciones',[DistribuidorasController::class,'distribuidorasInactivas'])->name('verificador.notificaciones');
+
+    Route::get('/verificador/distribuidora/{id}', [DistribuidorasController::class, 'detalle'])->name('verificador.detalle');
 });
+
+
 
 
 //RUTA QUE SON PARA GERENTES

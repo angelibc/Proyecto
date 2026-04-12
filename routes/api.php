@@ -62,3 +62,7 @@ Route::get('lista/vales',[ValesController::class,'listaVales']);
 Route::get('lista/clientes',[ClientesController::class,'listaClientes']);
 //Ruta de todos los clientes por id de distribuidora
 Route::get('clientes/distribuidora/{id}',[ClientesController::class,'clientesDistribuidora']);
+//Ruta de todas las distribuidoras inactivas para le verificador
+Route::get('/lista/distribuidoras-inactivas',[DistribuidorasController::class,'distribuidorasInactivas']);
+//Ruta para activar una distribuidora
+Route::put('/activar/distribuidora/{id}', [DistribuidorasController::class, 'activarDistribuidora']);

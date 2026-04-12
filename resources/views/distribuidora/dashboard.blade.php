@@ -85,30 +85,46 @@
     <x-header-bar />
     <div class="box-2">
         <div class="options">
+             @if(auth()->check() && auth()->user()->role_id == 4)
             <a href="{{ route('productos') }}" class="option-btn" style="background:green;">
                 <span>icon</span>
                 <h1 style="color:white;">Crear Prevale</h1>
             </a>
+            @endif
 
+             @if(auth()->check() && auth()->user()->role_id == 4)
             <a href="{{ route('clientes.index') }}" class="option-btn" style="background:#e54444">
                 <span>icon</span>
                 <h1 style="color:white;">Clientes</h1>
             </a>
+            @endif
 
+            @if(auth()->check() && auth()->user()->role_id == 4)
             <a href="#" class="option-btn" style="background:#305be3">
                 <span>icon</span>
                 <h1 style="color:white;">Relaciones</h1>
             </a>
+            @endif
+
+            @if(auth()->check() && auth()->user()->role_id == 3)
+            <a href="{{ route('verificador.notificaciones') }}" class="option-btn" style="background:purple">
+                <span>icon</span>
+                <h1 style="color:white;">Notificaciones</h1>
+            </a>
+            @endif
 
             <a href="#" class="option-btn" style="background:gray">
                 <span>icon</span>
                 <h1 style="color:white;">Ajustes</h1>
             </a>
+
+             @if(auth()->check() && auth()->user()->role_id == 4)
             <a href="{{ route('distribuidora.vale') }}" class="option-btn" style="background:orange">
                 <span>icon</span>
                 <h1 style="color:white;">Vales</h1>
             </a>
-            <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display:none;">
+            @endif
+            <form method="POST" action="{{ route('logout') }}"w id="logout-form" style="display:none;">
                 @csrf
             </form>
               <a href="#" onclick="document.getElementById('logout-form').submit();" class="option-btn" style="background:red">

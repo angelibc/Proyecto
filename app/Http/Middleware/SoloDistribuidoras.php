@@ -16,7 +16,7 @@ class SoloDistribuidoras
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role_id == 4 ) {
+        if (Auth::check() && in_array(Auth::user()->role_id, [3, 4])) {
             return $next($request);
         }
 
