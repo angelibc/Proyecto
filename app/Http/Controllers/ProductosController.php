@@ -18,19 +18,20 @@ class ProductosController
         };
     }
 
+
     public function crearProducto(Request $request)
     {
         try {
             $data = $request->validate([
                 'monto'               => 'required|numeric|min:0.01',
-                'porcentaje_comision' => 'required|string|between:0,100',
+                'porcentaje_comision' => 'required|numeric|between:0,100',
                 'seguro'              => 'required|numeric|min:0',
                 'quincenas'           => 'required|integer|min:1|max:96',
-                'interes_quincenal'   => 'required|string|min:0',
+                'interes_quincenal'   => 'required|numeric|min:0',
             ]);
 
-            $data['porcentaje_comision'] = "0." . $data['porcentaje_comision'];
-            $data['interes_quincenal']   = "0." . $data['interes_quincenal'];
+            $data['porcentaje_comision'] = (float) $data['porcentaje_comision'] / 100;
+            $data['interes_quincenal']   = (float) $data['interes_quincenal'] / 100;
 
             $producto = Producto::create($data);
 

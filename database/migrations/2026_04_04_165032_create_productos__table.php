@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->id();            
             $table->decimal('monto', 10, 2);            
-            $table->string('porcentaje_comision')->default("0");            
+            $table->decimal('porcentaje_comision',8,2)->default("0");            
             $table->decimal('seguro', 10, 2)->default(0);            
             $table->integer('quincenas');            
-            $table->string('interes_quincenal')->default("0");            
+            $table->decimal('interes_quincenal',8,2)->default("0");            
             $table->timestamps();
         });
     }
