@@ -86,12 +86,10 @@
     <div class="box-2">
         <div class="options">
             <a href="{{ route('verificador.notificaciones') }}" class="option-btn" style="background:purple">
-                <span>icon</span>
                 <h1 style="color:white;">Notificaciones</h1>
             </a>
 
             <a href="#" class="option-btn" style="background:gray">
-                <span>icon</span>
                 <h1 style="color:white;">Ajustes</h1>
             </a>
 
@@ -99,7 +97,6 @@
                 @csrf
             </form>
               <a href="#" onclick="document.getElementById('logout-form').submit();" class="option-btn" style="background:red">
-                <span>icon</span>
                 <h1 style="color:white;">Cerrar Sesion</h1>
             </a>
         </div>

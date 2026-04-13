@@ -61,7 +61,7 @@
         <p class="role">{{ auth()->user()->role->role }}</p>
     </div>
 
-    @if(auth()->check() && auth()->user()->role_id == 1)
+    @if(auth()->check() && auth()->user()->role_id == 2)
         <a href="{{ route('distribuidoras.create') }}" class="btn-nueva">
             <span>+</span> Nueva Distribuidora
         </a>
@@ -69,8 +69,12 @@
 
     <nav>
         <ul class="menu-nav">
+            @if(auth()->check() && auth()->user()->role_id == 1)
             <li><a href="{{ route('gerente.productos') }}">Productos</a></li>
+            @endif
+            @if(auth()->check() && auth()->user()->role_id == 1)
             <li><a href="{{ route('gerente.distribuidoras') }}">Distribuidoras</a></li>
+            @endif
             <li><a href="#">Relaciones</a></li>
             <li><a href="#">Vales</a></li>
             <li><a href="#">Configuracion</a></li>

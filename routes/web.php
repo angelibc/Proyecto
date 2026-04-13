@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\DistribuidorasController;
+use App\Http\Controllers\ValesController;
 use Illuminate\Support\Facades\Route;
 
 // ================================
@@ -15,6 +16,7 @@ Route::get('/', function () {
 // ================================
 // GERENTE - role_id 1
 // ================================
+
 Route::middleware(['auth', 'gerente'])->group(function () {
     Route::get('/gerente/dashboard', function () {
         return view('gerente.dashboard');
@@ -26,19 +28,24 @@ Route::middleware(['auth', 'gerente'])->group(function () {
     Route::get('/gerente/distribuidora', [DistribuidorasController::class, 'listaDistribuidoras'])
         ->name('gerente.distribuidoras');
 
+    Route::post('/distribuidoras/store', [DistribuidorasController::class, 'crearDistribuidora'])->name('distribuidoras.store');
+});
+
+// ================================
+// COORDINADOR - role_id 2
+// ================================
+
+Route::middleware(['auth', 'coordinador'])->group(function () {
+    Route::get('/coordinador/dashboard', function () {
+        return view('coordinador.dashboard');
+    })->name('coordinador.dashboard');
+
     Route::get('/nueva-distribuidora', function () {
         return view('auth.register');
     })->name('distribuidoras.create');
 
     Route::post('/distribuidoras/store', [DistribuidorasController::class, 'crearDistribuidora'])
         ->name('distribuidoras.store');
-});
-
-
-Route::middleware(['auth', 'coordinador'])->group(function () {
-    Route::get('/coordinador/dashboard', function () {
-        return view('coordinador.dashboard');
-    })->name('coordinador.dashboard');
 });
 
 // ================================
@@ -60,6 +67,7 @@ Route::middleware(['auth', 'verificador'])->group(function () {
 // ================================
 // DISTRIBUIDOR - role_id 4
 // ================================
+
 Route::middleware(['auth', 'distribuidor'])->group(function () {
     Route::get('/distribuidora/dashboard', function () {
         return view('distribuidora.dashboard');
@@ -69,13 +77,15 @@ Route::middleware(['auth', 'distribuidor'])->group(function () {
         return view('distribuidora.clientes');
     })->name('clientes.index');
 
-    Route::get('/distribuidora/vales', function () {
-        return view('distribuidora.vales');
-    })->name('distribuidora.vale');
+    Route::get('/distribuidora/vales', [ValesController::class, 'valesPorDistribuidora'])->name('distribuidora.vale');
 
-    Route::get('/distribuidora/productos', [ProductosController::class, 'listaProductos'])
-        ->name('productos');
+    Route::get('/distribuidora/productos', [ProductosController::class, 'listaProductos'])->name('productos');
 });
+
+
+// ================================
+// CAJERA - role_id 5
+// ================================
 
 Route::middleware(['auth', 'cajera'])->group(function () {
     Route::get('/cajera/dashboard', function () {
@@ -86,10 +96,22 @@ Route::middleware(['auth', 'cajera'])->group(function () {
 // ================================
 // RUTAS COMPARTIDAS AUTH
 // ================================
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/dashboard', function () {
+    return match(auth()->user()->role_id) {
+        1 => redirect()->route('gerente.dashboard'),
+        2 => redirect()->route('coordinador.dashboard'),
+        3 => redirect()->route('verificador.dashboard'),
+        4 => redirect()->route('distribuidora.dashboard'),
+        5 => redirect()->route('cajera.dashboard'),
+        default => redirect()->route('login'),
+    };
+})->middleware('auth')->name('dashboard');
 
 require __DIR__.'/auth.php';

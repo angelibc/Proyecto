@@ -87,30 +87,24 @@
         <div class="options">
 
             <a href="{{ route('productos') }}" class="option-btn" style="background:green;">
-                <span>icon</span>
                 <h1 style="color:white;">Crear Prevale</h1>
             </a>
             <a href="{{ route('clientes.index') }}" class="option-btn" style="background:#e54444">
-                <span>icon</span>
                 <h1 style="color:white;">Clientes</h1>
             </a>         
             <a href="#" class="option-btn" style="background:#305be3">
-                <span>icon</span>
                 <h1 style="color:white;">Relaciones</h1>
             </a>
             <a href="#" class="option-btn" style="background:gray">
-                <span>icon</span>
                 <h1 style="color:white;">Ajustes</h1>
             </a>
             <a href="{{ route('distribuidora.vale') }}" class="option-btn" style="background:orange">
-                <span>icon</span>
                 <h1 style="color:white;">Vales</h1>
             </a>
             <form method="POST" action="{{ route('logout') }}"w id="logout-form" style="display:none;">
                 @csrf
             </form>
               <a href="#" onclick="document.getElementById('logout-form').submit();" class="option-btn" style="background:red">
-                <span>icon</span>
                 <h1 style="color:white;">Cerrar Sesion</h1>
             </a>
         </div>

@@ -316,6 +316,21 @@
             </form>
         </div>
     </div>
+<div id="toast" style="
+position: fixed;
+top: 30px;
+right: 30px;
+padding: 14px 20px;
+border-radius: 10px;
+font-size: 0.9rem;
+font-weight: 600;
+color: white;
+z-index: 9999;
+opacity: 0;
+transform: translateY(-20px);
+transition: all 0.3s ease;
+pointer-events: none;">
+</div>
 </body>
 <script>
     let current = 1;
@@ -345,6 +360,7 @@
             document.getElementById('btnSave').style.display = 'none';
         }
     }
+    
     function enviarForm() {
         const form = document.getElementById('multiStepForm');
         const formData = new FormData(form);
@@ -367,16 +383,28 @@
         .then(data => {
             console.log('Respuesta:', data);
             if (data.res) {
-                alert('✅ Distribuidora creada correctamente');
-                // window.location.href = '/dashboard';
+                mostrarToast('✅ Distribuidora activada correctamente', 'success');
+                setTimeout(() => {
+                    window.location.href = '/verificador/notificaciones';
+                }, 1400);
             } else {
-                alert('❌ Error: ' + data.mensaje);
+                mostrarToast('❌ ' + data.mensaje, 'error');
             }
         })
-        .catch(error => {
-            console.error(error);
-            alert('❌ Error al enviar');
-        });
+        .catch(() => mostrarToast('❌ Error al activar', 'error'));
+    }
+
+    function mostrarToast(mensaje, tipo = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = mensaje;
+        toast.style.background = tipo === 'success' ? '#16a34a' : '#dc2626';
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+        }, 3000);
     }
 </script>
 </html>

@@ -12,19 +12,10 @@ use Illuminate\Http\Request;
 class DistribuidorasController
 {
 
-    public function listaDistribuidoras(){
+    public function listaDistribuidoras()
+    {
         $distribuidoras = Distribuidora::with('usuario.persona')->get();
-
-        return response()->json([
-            'mensaje' => 'Lista de distribuidoras',
-            'distribuidoras' => $distribuidoras
-        ],200);
-
-        return match(auth()->user()->role_id) {
-            4 => view('distribuidora.productos', compact('productos')),  // distribuidor
-            1 => view('gerente.productos', compact('productos')),        // gerente
-            default => abort(403, 'No tienes acceso.')
-        };
+        return view('gerente.distribuidora', compact('distribuidoras'));
     }
 
     public function distribuidorasInactivas(){

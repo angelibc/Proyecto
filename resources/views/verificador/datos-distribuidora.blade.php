@@ -121,6 +121,7 @@
     transition: all 0.3s ease;
     pointer-events: none;">
     </div>
+</body>
 <script>
     function activarDistribuidora(id) {
         fetch(`/api/activar/distribuidora/${id}`, {
@@ -157,5 +158,4 @@
         }, 3000);
     }
 </script>
-</body>
 </html>

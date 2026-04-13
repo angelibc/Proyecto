@@ -18,18 +18,19 @@ class ProductosController
         };
     }
 
-
     public function crearProducto(Request $request)
     {
         try {
-            // La regla 'required' por sí sola ya impide valores NULL o vacíos
             $data = $request->validate([
-                'monto'               => 'required|unique:productos,monto|numeric|min:0.01',
-                'porcentaje_comision' => 'required|unique:productos,porcentaje_comision|numeric|between:0,100',
-                'seguro'              => 'required|unique:productos,seguro|numeric|min:0',
-                'quincenas'           => 'required|unique:productos,quincenas|integer|min:1|max:96',
-                'interes_quincenal'   => 'required|unique:productos,interes_quincenal|numeric|min:0',
+                'monto'               => 'required|numeric|min:0.01',
+                'porcentaje_comision' => 'required|string|between:0,100',
+                'seguro'              => 'required|numeric|min:0',
+                'quincenas'           => 'required|integer|min:1|max:96',
+                'interes_quincenal'   => 'required|string|min:0',
             ]);
+
+            $data['porcentaje_comision'] = "0." . $data['porcentaje_comision'];
+            $data['interes_quincenal']   = "0." . $data['interes_quincenal'];
 
             $producto = Producto::create($data);
 
@@ -67,6 +68,7 @@ class ProductosController
             'interes_quincenal'    => 'sometimes|numeric|min:0',
             'activo'               => 'sometimes|boolean',
         ]);
+        
 
         $producto->update($validated);
 
@@ -74,5 +76,18 @@ class ProductosController
             'mensaje'  => 'Producto actualizado correctamente',
             'producto' => $producto
         ], 200);
-        }
     }
+
+    public function eliminarProducto($id)
+    {
+        $producto = Producto::findOrFail($id);
+        $producto->delete();
+
+        return response()->json([
+            'status'  => 'success',
+            'mensaje' => 'Producto eliminado correctamente'
+        ], 200);
+    }
+}
+
+    

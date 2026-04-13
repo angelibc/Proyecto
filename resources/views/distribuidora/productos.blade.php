@@ -93,7 +93,7 @@
     }
 
     .form-group label {
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #4b5563;
     }
@@ -149,7 +149,7 @@
         <form id="formPrevale" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="producto_id" id="modal_producto_id">
-            <input type="hidden" name="distribuidor_id" value="1"> <input type="hidden" name="estado" value="activo">
+            <input type="hidden" name="distribuidor_id" value="1"> <input type="hidden" name="estado" value="prevale">
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group">
@@ -207,8 +207,22 @@
         </form>
     </div>
 </div>
+<div id="toast" style="
+position: fixed;
+top: 30px;
+right: 30px;
+padding: 14px 20px;
+border-radius: 10px;
+font-size: 0.9rem;
+font-weight: 600;
+color: white;
+z-index: 9999;
+opacity: 0;
+transform: translateY(-20px);
+transition: all 0.3s ease;
+pointer-events: none;">
+</div>
 </body>
-</html>
 <script>
     function abrirModalProducto(id, producto_id) {
         document.getElementById('modal_producto_id').value = producto_id;
@@ -220,39 +234,48 @@
         document.getElementById(id).style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
     async function enviarVale() {
-    const form = document.getElementById('formPrevale');
-    const formData = new FormData(form);
+        const form = document.getElementById('formPrevale');
+        const formData = new FormData(form);
 
-    // Agregamos los datos que mencionaste que son necesarios
-    formData.append('folio', 'VALE-2026-' + Math.floor(Math.random() * 1000));
-    formData.append('fecha_emision', '2026-04-10');
-    // El producto_id ya se debió setear en el abrirModal()
+        formData.append('folio', 'VALE-' + Date.now());
 
-    try {
-        const response = await fetch('/api/crear/vale', { // <--- Ruta de tu imagen
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                // IMPORTANTE: Al ser API, Laravel suele esperar un Token si tienes middleware.
-                // Si no tienes auth:sanctum en esa ruta, con esto basta.
+        try {
+            const response = await fetch('/api/crear/vale', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            });
+
+            const res = await response.json();
+
+            if (response.ok) {
+                cerrarModal('modalPrevale');
+                form.reset();
+                mostrarToast('✅ Vale creado exitosamente', 'success');
+            } else {
+                mostrarToast('❌ ' + (res.message || 'Error al crear el vale'), 'error');
             }
-        });
-
-        const res = await response.json();
-
-        if (response.ok) {
-            alert('¡Vale creado exitosamente!');
-            console.log('Respuesta del servidor:', res);
-            cerrarModal();
-        } else {
-            console.error('Errores de validación:', res.errors);
-            alert('Revisa los datos: ' + (res.message || 'Error desconocido'));
-        }
         } catch (error) {
             console.error('Error en la conexión:', error);
+            mostrarToast('❌ Error de conexión', 'error');
         }
     }
+
+    function mostrarToast(mensaje, tipo = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = mensaje;
+        toast.style.background = tipo === 'success' ? '#16a34a' : '#dc2626';
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-20px)';
+        }, 3000);
+    }
 </script>
+</html>
