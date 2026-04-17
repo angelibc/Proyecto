@@ -67,7 +67,7 @@
                     <td>{{ $dist->usuario->email }}</td>
                     <td>{{ $dist->usuario->persona->celular }}</td>
                     <td>${{ number_format($dist->linea_credito, 2) }}</td>
-                    <td><span class="badge-red">Inactiva</span></td>
+                    <td><span class="badge-red">Presolicitud</span></td>
                 </tr>
                 @empty
                 <tr>

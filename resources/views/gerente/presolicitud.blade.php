@@ -4,27 +4,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerente - Distribuidoras</title>
+    <title>Gerente - Pre-solicitudes</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <style>
-    /* Reset y Base */
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
     body, html { width:100%; height:100%; background-color:#f8fafc; color: #1e293b; }
     
     .dashboard-container { display:flex; width:100%; height:100vh; }
     .contenido { flex:1; width:100%; padding:40px; overflow-y:auto; }
     
-    /* Encabezado */
     .header-section { margin-bottom: 30px; }
     h1 { color:#0f172a; font-size:1.875rem; font-weight: 700; }
     .welcome-text { color: #64748b; margin-top: 4px; }
 
-    /* Panel con el diseño de la foto */
     .panel { 
         background:white; 
         border-radius:16px; 
+        padding:0; 
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); 
         overflow: hidden;
         border: 1px solid #e2e8f0;
@@ -36,10 +34,10 @@
         align-items:center; 
         padding: 20px 24px;
         border-bottom: 1px solid #f1f5f9;
+        background-color: #ffffff;
     }
     .box-header h2 { font-size:1.1rem; font-weight:700; color:#334155; }
     
-    /* Tabla Estilizada */
     .table-container { overflow-x: auto; }
     table { width:100%; border-collapse:collapse; font-size:0.875rem; }
     thead tr { background:#f8fafc; border-bottom:1px solid #e2e8f0; }
@@ -47,13 +45,11 @@
     td { padding:16px; border-bottom:1px solid #f1f5f9; color:#334155; vertical-align: middle; }
     tbody tr:hover { background:#f1f5f9; transition: background 0.2s; }
 
-    /* Componentes de celda */
     .user-info { display: flex; flex-direction: column; }
     .user-name { font-weight: 600; color: #0f172a; }
     .user-sub { font-size: 0.75rem; color: #64748b; }
 
     .badge { padding:4px 12px; border-radius:9999px; font-size:0.7rem; font-weight:700; text-transform: uppercase; }
-    .badge-green { background:#d1fae5; color:#065f46; border: 1px solid #a7f3d0; }
     .badge-red { background:#fee2e2; color:#991b1b; border: 1px solid #fecaca; }
     
     .btn-action {
@@ -81,18 +77,18 @@
                 <h1>Panel de Gerencia</h1>
                 <p class="welcome-text">
                     Bienvenido, <span style="font-weight: 600; color: #3b82f6;">{{ auth()->user()->persona->nombre }}</span>. 
-                    Gestiona todas las distribuidoras activas.
+                    Tienes tareas pendientes hoy.
                 </p>
             </div>
 
             <div class="panel">
                 <div class="box-header">
                     <div>
-                        <h2>Listado de Distribuidoras</h2>
-                        <p style="font-size: 0.8rem; color: #64748b; font-weight: 400;">Control total de cuentas y créditos.</p>
+                        <h2>Pre-solicitudes de Distribuidoras</h2>
+                        <p style="font-size: 0.8rem; color: #64748b; font-weight: 400;">Listado de registros en espera de activación.</p>
                     </div>
-                    <span class="badge" style="background: #eff6ff; color: #1e40af; border: none;">
-                        Total: {{ $distribuidoras->count() }}
+                    <span class="badge" style="background: #eff6ff; color: #1e40af;">
+                        {{ $distribuidoras->count() }} Pendientes
                     </span>
                 </div>
 
@@ -120,9 +116,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div style="display: flex; align-items: center; gap: 6px;">
-                                        <i data-lucide="phone" style="width: 14px; color: #64748b;"></i>
-                                        {{ $dist->usuario->persona->celular }}
+                                    <div class="user-info">
+                                        <span><i data-lucide="phone" style="width: 12px; display: inline; margin-right: 4px;"></i>{{ $dist->usuario->persona->celular }}</span>
                                     </div>
                                 </td>
                                 <td style="font-weight: 600; color: #0f172a;">
@@ -135,24 +130,23 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge {{ $dist->estado == 'activo' ? 'badge-green' : 'badge-red' }}">
+                                    <span class="badge badge-red">
                                         {{ $dist->estado }}
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn-action">
-                                        <i data-lucide="external-link" style="width: 14px;"></i>
-                                        Detalles
+                                    <button class="btn-action" onclick="activarDistribuidora({{ $dist->id }}, this)" 
+                                            style="background: #d1fae5; color: #065f46; border-color: #6ee7b7;">
+                                        <i data-lucide="check-circle" style="width: 14px;"></i>
+                                        Activar
                                     </button>
                                 </td>
                             </tr>
                             @empty
                             <tr>
                                 <td colspan="7" style="text-align:center; padding:60px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <i data-lucide="search-x" style="width: 48px; height: 48px; color: #cbd5e1;"></i>
-                                        <p style="color:#94a3b8; font-size: 1rem;">No se encontraron distribuidoras en el sistema.</p>
-                                    </div>
+                                    <i data-lucide="inbox" style="width: 48px; height: 48px; color: #cbd5e1; margin-bottom: 10px;"></i>
+                                    <p style="color:#94a3b8; font-size: 1rem;">No hay distribuidoras inactivas en este momento.</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -164,6 +158,42 @@
     </div>
 
     <script>
+        function activarDistribuidora(id, boton) {
+
+            const originalHTML = boton.innerHTML;
+            boton.disabled = true;
+            boton.innerHTML = "Activando...";
+
+            fetch(`/api/activar/distribuidora/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.res) {
+                    const fila = boton.closest('tr');
+                    fila.style.transition = 'all 0.5s';
+                    fila.style.opacity = '0';
+                    fila.style.transform = 'translateX(20px)';
+                    
+                    setTimeout(() => {
+                        fila.remove();
+                    }, 500);
+
+                    if(typeof mostrarToast === "function") {
+                        mostrarToast('✅ Distribuidora activada con éxito');
+                    }
+                }
+            })
+            .catch(err => {
+                boton.disabled = false;
+                boton.innerHTML = originalHTML;
+                alert('Error al activar');
+            });
+        }
         lucide.createIcons();
     </script>
 </body>

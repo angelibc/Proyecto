@@ -18,10 +18,20 @@ class DistribuidorasController
         return view('gerente.distribuidora', compact('distribuidoras'));
     }
 
+    public function distribuidorasPresolicitud(){
+        $distribuidoras = Distribuidora::where('estado', 'presolicitud')->with('usuario.persona')->get();
+
+        return view('verificador.notificaciones', compact('distribuidoras'));
+        // return response()->json([
+        //     'mensaje' => 'exito!',
+        //     'distribuidoras' => $distribuidoras
+        // ],200);
+    }
+
     public function distribuidorasInactivas(){
         $distribuidoras = Distribuidora::where('estado', 'inactivo')->with('usuario.persona')->get();
 
-        return view('verificador.notificaciones', compact('distribuidoras'));
+        return view('gerente.presolicitud', compact('distribuidoras'));
         // return response()->json([
         //     'mensaje' => 'exito!',
         //     'distribuidoras' => $distribuidoras
@@ -37,11 +47,8 @@ class DistribuidorasController
         return view('verificador.datos-distribuidora', compact('distribuidora'));
     }
 
-
     public function obtenerDetalleDistribuidoras()
     {
-        // Usamos with() para cargar las relaciones de golpe
-        // Si tus modelos tienen estos nombres de funciones, funcionará:
         $distribuidoras = Distribuidora::with([
             'usuario.persona', // Trae el usuario y su info personal
             'usuario.role',    // Trae el rol del usuario

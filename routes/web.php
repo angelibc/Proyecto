@@ -31,6 +31,8 @@ Route::middleware(['auth', 'gerente'])->group(function () {
         ->name('gerente.distribuidoras');
 
     Route::post('/distribuidoras/store', [DistribuidorasController::class, 'crearDistribuidora'])->name('distribuidoras.store');
+
+    Route::get('/gerente/presolicitudes',[DistribuidorasController::class,'distribuidorasInactivas'])->name('gerente.presolicitud');
 });
 
 // ================================

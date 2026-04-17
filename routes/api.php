@@ -66,5 +66,7 @@ Route::get('/lista/distribuidoras-inactivas',[DistribuidorasController::class,'d
 Route::put('/activar/distribuidora/{id}', [DistribuidorasController::class, 'activarDistribuidora']);
 //Ruta para elimiar un producto alv
 Route::delete('/eliminar/producto/{id}', [ProductosController::class, 'eliminarProducto']);
-
+//Ruta de relaciones de la distribuidora logueada
 Route::get('/distribuidora/relaciones',[RelacionesController::class,'listaRelacionesAuth']);
+//Ruta para activar a una distribuidora
+Route::patch('/activar/distribuidora/{id}', [DistribuidorasController::class, 'activarDistribuidora']);

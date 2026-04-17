@@ -75,6 +75,7 @@
             @if(auth()->check() && auth()->user()->role_id == 1)
             <li><a href="{{ route('gerente.distribuidoras') }}">Distribuidoras</a></li>
             @endif
+            <li><a href="{{ route('gerente.presolicitud') }}">Presolicitudes</a></li>
             <li><a href="#">Relaciones</a></li>
             <li><a href="#">Vales</a></li>
             <li><a href="#">Configuracion</a></li>

@@ -103,7 +103,7 @@
 
         {{-- Botón Activar --}}
         <button class="btn-activar" onclick="activarDistribuidora({{ $distribuidora->id }})">
-            ✅ Activar Distribuidora
+            ✅ Confirmar Distribuidora
         </button>
     </div>
     <div id="toast" style="
