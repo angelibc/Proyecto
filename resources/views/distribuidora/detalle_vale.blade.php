@@ -9,10 +9,27 @@
         /* Base y Layout */
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
         body, html {
-            padding-top: 1rem !important;
             background-color: #f4f7f6;
             padding: 20px;
             min-height: 100vh;
+            /* Espacio para el header fijo en pantalla */
+            padding-top: 4rem !important;
+        }
+
+        @media print {
+            body, html { 
+                padding-top: 0 !important; 
+                background: white;
+                padding: 0;
+            }
+            .btn-print, .box { display: none !important; }
+            .container-pdf { 
+                box-shadow: none !important; 
+                margin: 0 !important; 
+                width: 100% !important;
+                max-width: none !important;
+                padding: 0 !important;
+            }
         }
 
         .container-pdf { 
@@ -89,6 +106,7 @@
     </style>
 </head>
 <body>
+    <x-header-bar />
     <div class="container-pdf">
         <div class="header-pdf">
             <div class="distributor-info">
@@ -111,11 +129,18 @@
             </div>
             <div>
                 <span>Fecha Límite de Pago</span>
-                <strong>{{ \Carbon\Carbon::parse($relacion['fecha_limite_pago'])->format('d \d\e F Y') }}</strong>
+                <strong>{{ \Carbon\Carbon::parse($relacion['fecha_limite_pago'])->locale('es')->translatedFormat('d \d\e F Y') }}</strong>
             </div>
             <div>
                 <span>Pago Anticipado</span>
-                <strong>{{ \Carbon\Carbon::parse($relacion['pago_anticipado'])->format('d, m, y') }}</strong>
+                @php
+                    $limite = \Carbon\Carbon::parse($relacion['fecha_limite_pago'])->locale('es');
+                    $d1 = $limite->copy()->subDays(3)->format('d');
+                    $d2 = $limite->copy()->subDays(2)->format('d');
+                    $d3 = $limite->copy()->subDays(1)->format('d');
+                    $mesAnio = $limite->copy()->subDays(1)->translatedFormat('F Y');
+                @endphp
+                <strong>{{ $d1 }},{{ $d2 }},{{ $d3 }} de {{ strtolower($mesAnio) }}</strong>
             </div>
             <div>
                 <span>Total a Pagar</span>
@@ -128,36 +153,59 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Producto / Folio</th>
+                        <th>Producto</th>
                         <th>Cliente</th>
-                        <th>Quincenas</th>
-                        <th>Seguro</th>
+                        <th>Pagos Realizados</th>
                         <th>Comisión</th>
-                        <th>Pago Sugerido</th>
+                        <th>Pago</th>
+                        <th>Recargos</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php $totalPagar = 0; @endphp
+                    @php 
+                        $totalComision = 0;
+                        $totalPago = 0;
+                        $totalRecargos = 0;
+                        $totalGeneral = 0;
+                    @endphp
                     @foreach($detalles as $index => $det)
+                    @php
+                        $comision = $det['comision'] ?? 0;
+                        $pago = $det['pago'] ?? 0;
+                        // Calculamos el recargo individual dividiendo el total de recargos entre la cantidad de vales
+                        $recargos = (count($detalles) > 0) ? ($relacion['recargos'] / count($detalles)) : 0;
+                        $totalFila = $pago + $recargos;
+
+                        $totalComision += $comision;
+                        $totalPago += $pago;
+                        $totalRecargos += $recargos;
+                        $totalGeneral += $totalFila;
+                    @endphp
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>
-                            <strong>{{ $det['producto_folio'] }}</strong><br>
-                            <small>{{ $det['fecha_emision'] }}</small>
-                        </td>
+                        <td>{{ $det['producto_folio'] }}</td>
                         <td>{{ $det['nombre_cliente'] }}</td>
-                        <td>{{ $det['quincenas'] }}</td>
-                        <td>${{ number_format($det['seguro'], 2) }}</td>
-                        <td>${{ number_format($det['comision'], 2) }}</td>
-                        <td><strong>${{ number_format($det['pago'], 2) }}</strong></td>
+                        <td>
+                            @php
+                                $pagoActual = explode('/', $relacion['pagos_realizados'])[0] ?? 1;
+                            @endphp
+                            {{ $pagoActual }}/{{ $det['quincenas'] }}
+                        </td>
+                        <td>${{ number_format($comision, 2) }}</td>
+                        <td>${{ number_format($pago, 2) }}</td>
+                        <td>${{ number_format($recargos, 2) }}</td>
+                        <td><strong>${{ number_format($totalFila, 2) }}</strong></td>
                     </tr>
-                    @php $totalPagar += $det['pago']; @endphp
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr class="row-total">
-                        <td colspan="6" style="text-align: right;">TOTALES</td>
-                        <td>${{ number_format($totalPagar, 2) }}</td>
+                        <td colspan="4" style="text-align: right;">Totales</td>
+                        <td>${{ number_format($totalComision, 2) }}</td>
+                        <td>${{ number_format($totalPago, 2) }}</td>
+                        <td>${{ number_format($totalRecargos, 2) }}</td>
+                        <td><strong>${{ number_format($totalGeneral, 2) }}</strong></td>
                     </tr>
                 </tfoot>
             </table>

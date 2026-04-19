@@ -149,6 +149,12 @@
                         <i data-lucide="file-text"></i> Presolicitudes
                     </a>
                 </li>
+                <p class="menu-label">Sistema</p>
+                 <li>
+                    <a href="{{ route('gerente.configuracion') }}" class="{{ request()->routeIs('gerente.configuracion') ? 'active' : '' }}">
+                        <i data-lucide="settings"></i> Configuración
+                    </a>
+                </li>
                 @endif
                 @if(auth()->check() && auth()->user()->role_id == 5)
                 <li><a href="{{ route('cajera.prevale') }}"><i data-lucide="git-merge"></i> Prevales</a></li>

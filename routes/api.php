@@ -14,7 +14,7 @@ use App\Http\Controllers\DatosVehiculosController;
 use App\Http\Controllers\AfilialesController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\RelacionesController;
-
+use App\Http\Controllers\ConfiguracionesController;
 
 
 Route::get('/user', function (Request $request) {
@@ -72,3 +72,6 @@ Route::get('/distribuidora/relaciones',[RelacionesController::class,'listaRelaci
 Route::patch('/activar/distribuidora/{id}', [DistribuidorasController::class, 'activarDistribuidora']);
 
 Route::patch('/inactivar/distribuidora/{id}', [DistribuidorasController::class, 'inactivarDistribuidora']);
+
+// Rutas de configuración de Bonos
+Route::post('/configuracion/store', [ConfiguracionesController::class, 'store']);

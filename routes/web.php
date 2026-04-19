@@ -7,6 +7,7 @@ use App\Http\Controllers\ValesController;
 use App\Http\Controllers\RelacionesController;
 use App\Http\Controllers\DetallesValesController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\ConfiguracionesController;
 use Illuminate\Support\Facades\Route;
 
 // ================================
@@ -34,6 +35,9 @@ Route::middleware(['auth', 'gerente'])->group(function () {
     Route::post('/gerente/distribuidora/{id}/estado', [DistribuidorasController::class, 'actualizarEstado'])->name('gerente.distribuidoras.estado');
 
     Route::get('/gerente/presolicitudes',[DistribuidorasController::class,'distribuidorasInactivas'])->name('gerente.presolicitud');
+
+    Route::get('/gerente/configuracion', [ConfiguracionesController::class, 'index'])->name('gerente.configuracion');
+    Route::post('/gerente/configuracion', [ConfiguracionesController::class, 'update'])->name('gerente.configuracion.update');
 });
 
 // ================================

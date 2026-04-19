@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('num_distribuidora'); // "XXXXXXXXX" [cite: 2]
             $table->string('nombre_distribuidora'); // "Luz Maria Rivas Ruiz" [cite: 2]
-            $table->text('domicilio')->nullable(); // Calle las cruces, Villa Jardin [cite: 2]
+            $table->string('domicilio'); // Calle las cruces, Villa Jardin [cite: 2]
             $table->decimal('limite_de_credito', 12, 2); // "\$20,000" [cite: 4]
             $table->decimal('credito_disponible', 12, 2); // "\$5,200" [cite: 4]
             $table->integer('puntos')->default(0); // "346" [cite: 5]
