@@ -10,7 +10,7 @@ use App\Models\Producto;
 class ProductosController
 {
     public function listaProductos(){
-        $productos = Producto::all();
+        $productos = Producto::paginate(5);
         return match(auth()->user()->role_id) {
             4 => view('distribuidora.productos', compact('productos')),  // distribuidor
             1 => view('gerente.productos', compact('productos')),        // gerente
@@ -20,7 +20,7 @@ class ProductosController
     public function index()
     {
         $distribuidora = auth()->user()->distribuidora;
-        $productos = Producto::all(); // o como lo tengas
+        $productos = Producto::paginate(5);
 
         return view('distribuidora.productos', compact('productos', 'distribuidora'));
     }

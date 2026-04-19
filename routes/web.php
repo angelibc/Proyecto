@@ -30,6 +30,8 @@ Route::middleware(['auth', 'gerente'])->group(function () {
     Route::get('/gerente/distribuidora', [DistribuidorasController::class, 'listaDistribuidoras'])->name('gerente.distribuidoras');
 
     Route::post('/distribuidoras/store', [DistribuidorasController::class, 'crearDistribuidora'])->name('distribuidoras.store');
+    
+    Route::post('/gerente/distribuidora/{id}/estado', [DistribuidorasController::class, 'actualizarEstado'])->name('gerente.distribuidoras.estado');
 
     Route::get('/gerente/presolicitudes',[DistribuidorasController::class,'distribuidorasInactivas'])->name('gerente.presolicitud');
 });
@@ -92,6 +94,10 @@ Route::middleware(['auth', 'cajera'])->group(function () {
     Route::get('/cajera/dashboard', function () {
         return view('cajera.dashboard');
     })->name('cajera.dashboard');
+
+    Route::get('/cajera/prevale', [ValesController::class, 'listaVales'])->name('cajera.prevale');
+    Route::get('/cajera/prevale/buscar/{folio}', [ValesController::class, 'buscarPorFolio']);
+    Route::post('/cajera/prevale/confirmar/{id}', [ValesController::class, 'confirmarPrevale']);
 });
 
 // ================================

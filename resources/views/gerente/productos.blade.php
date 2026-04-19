@@ -114,6 +114,50 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
+
+    /* Estilos para Paginación */
+    .pagination-container { 
+        padding: 24px 0; 
+        margin: 0 24px;
+        display: flex; 
+        justify-content: center; 
+        border-top: 1px solid #f1f5f9;
+    }
+    .pagination { display: flex; list-style: none; gap: 8px; padding: 0; align-items: center; }
+    .page-item { display: inline-block; }
+    .page-item .page-link { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 14px; 
+        border-radius: 8px; 
+        border: 1px solid #e2e8f0; 
+        background: white; 
+        color: #475569; 
+        text-decoration: none; 
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .page-item.active .page-link { 
+        background: #3b82f6; 
+        color: white; 
+        border-color: #3b82f6; 
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+    }
+    .page-item:not(.active):not(.disabled) .page-link:hover { 
+        background: #f8fafc; 
+        color: #0f172a; 
+        border-color: #cbd5e1;
+    }
+    .page-item.disabled .page-link { 
+        color: #cbd5e1; 
+        background: #f8fafc; 
+        cursor: not-allowed; 
+        border-color: #f1f5f9;
+    }
 </style>
 <body>
     <div class="dashboard-container">
@@ -128,7 +172,7 @@
                 <div class="box-header">
                     <div>
                         <h2>Catálogo de Préstamos</h2>
-                        <p style="font-size: 0.8rem; color: #64748b;">{{ $productos->count() }} productos configurados</p>
+                        <p style="font-size: 0.8rem; color: #64748b;">{{ $productos->total() }} productos configurados</p>
                     </div>
                     <button class="btn-nuevo" onclick="abrirModal('modalCrear')">
                         <i data-lucide="plus-circle" style="width: 18px;"></i>
@@ -196,6 +240,10 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <div class="pagination-container">
+                    {{ $productos->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </main>

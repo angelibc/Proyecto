@@ -32,8 +32,8 @@ class AuthenticatedSessionController extends Controller
         if ($user->role_id === 4) {
             $estado = $user->distribuidora->estado;
 
-            if ($estado !== 'activo') {
-                // Si no está activa, cerramos la sesión que Laravel acaba de abrir
+            if ($estado !== 'activo' && $estado !== 'moroso') {
+                // Si no está activa o morosa, cerramos la sesión que Laravel acaba de abrir
                 Auth::guard('web')->logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
@@ -55,7 +55,7 @@ class AuthenticatedSessionController extends Controller
             2 => redirect()->route('coordinador.dashboard'),
             3 => redirect()->route('verificador.dashboard'),
             4 => redirect()->route('distribuidora.dashboard'),
-            5 => redirect()->route('cajera.dashboard'),
+            5 => redirect()->route('cajera.prevale'),
             default => redirect()->route('login'),
         };
     }

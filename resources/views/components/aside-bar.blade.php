@@ -151,7 +151,7 @@
                 </li>
                 @endif
                 @if(auth()->check() && auth()->user()->role_id == 5)
-                <li><a href="#"><i data-lucide="git-merge"></i> Prevales</a></li>
+                <li><a href="{{ route('cajera.prevale') }}"><i data-lucide="git-merge"></i> Prevales</a></li>
                 @endif
             </ul>
         </nav>

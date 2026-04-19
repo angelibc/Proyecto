@@ -14,10 +14,9 @@ class DistribuidorasController
 
     public function listaDistribuidoras()
     {
-        $distribuidoras = Distribuidora::with('usuario.persona')->get();
+        $distribuidoras = Distribuidora::whereIn('estado', ['activo', 'moroso'])->with(['usuario.persona', 'categoria'])->paginate(5);
         return view('gerente.distribuidora', compact('distribuidoras'));
     }
-
 
     //Esta funcion muestra las distribuidoras con el estado en presolicitud, VISTA PARA VERIFICADOR
     public function distribuidorasPresolicitud(){
@@ -213,5 +212,23 @@ class DistribuidorasController
             'res' => true,
             'mensaje' => 'Distribuidora activada correctamente'
         ], 200);
+    }
+
+    public function actualizarEstado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|in:activo,moroso',
+            'categoria_id' => 'required|in:1,2,3',
+            'linea_credito' => 'required|numeric|min:0'
+        ]);
+
+        $distribuidora = Distribuidora::findOrFail($id);
+        $distribuidora->update([
+            'estado' => $request->estado,
+            'categoria_id' => $request->categoria_id,
+            'linea_credito' => $request->linea_credito
+        ]);
+
+        return redirect()->back()->with('success', 'Datos de la distribuidora actualizados correctamente.');
     }
 }

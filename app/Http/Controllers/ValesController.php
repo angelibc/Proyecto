@@ -14,12 +14,35 @@ use App\Models\Relacion;
 class ValesController
 {
     public function listaVales(){
-        $vales = Vale::all();
+        return view('cajera.prevale');
+    }
 
-        return response()->json([
-            'mensaje' => 'si jalo',
-            'vales'   => $vales
-        ],200);
+    public function buscarPorFolio($folio)
+    {
+        $vale = Vale::where('folio', $folio)
+            ->where('estado', 'prevale')
+            ->with(['cliente.persona', 'distribuidora', 'producto'])
+            ->first();
+
+        if (!$vale) {
+            return response()->json(['mensaje' => 'Prevale no encontrado o no está pendiente de validación'], 404);
+        }
+
+        return response()->json(['vale' => $vale], 200);
+    }
+
+    public function confirmarPrevale($id)
+    {
+        $vale = Vale::findOrFail($id);
+        
+        if ($vale->estado !== 'prevale') {
+            return response()->json(['mensaje' => 'El vale no está en estado prevale'], 400);
+        }
+
+        $vale->estado = 'activo';
+        $vale->save();
+
+        return response()->json(['mensaje' => 'Vale confirmado exitosamente'], 200);
     }
 
     public function valesPorDistribuidora()
