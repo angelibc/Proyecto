@@ -27,7 +27,7 @@ class ClientesController
         $id = auth()->user()->distribuidora->id;
 
         $clientes = Cliente::where('distribuidor_id', $id)
-                    ->with('persona')
+                    ->with(['persona', 'documentos'])
                     ->get();
 
         return view('distribuidora.clientes', compact('clientes'));
@@ -72,7 +72,7 @@ class ClientesController
 
             // Guardar Documentos en la nueva tabla
             if ($request->hasFile('comprobante_domicilio')) {
-                $pathComprobante = $request->file('comprobante_domicilio')->store('documentos/clientes/comprobantes', 'public');
+                $pathComprobante = $request->file('comprobante_domicilio')->store('documentos/clientes/comprobantes', 'spaces');
                 $cliente->documentos()->create([
                     'tipo' => 'Comprobante Domicilio',
                     'archivo_path' => $pathComprobante
@@ -80,7 +80,7 @@ class ClientesController
             }
 
             if ($request->hasFile('INE')) {
-                $pathIne = $request->file('INE')->store('documentos/clientes/ine', 'public');
+                $pathIne = $request->file('INE')->store('documentos/clientes/ine', 'spaces');
                 $cliente->documentos()->create([
                     'tipo' => 'INE',
                     'archivo_path' => $pathIne

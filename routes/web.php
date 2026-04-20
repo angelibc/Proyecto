@@ -49,6 +49,10 @@ Route::middleware(['auth', 'coordinador'])->group(function () {
         return view('coordinador.dashboard');
     })->name('coordinador.dashboard');
 
+    Route::get('/coordinador/notificaciones', function () {
+        return view('coordinador.notificaciones');
+    })->name('coordinador.notificaciones');
+
     Route::get('/nueva-distribuidora', function () {
         return view('auth.register');
     })->name('distribuidoras.create');
@@ -117,7 +121,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/dashboard', function () {
     return match(auth()->user()->role_id) {
         1 => redirect()->route('gerente.dashboard'),
-        2 => redirect()->route('coordinador.dashboard'),
+        2 => redirect()->route('coordinador.notificaciones'),
         3 => redirect()->route('verificador.dashboard'),
         4 => redirect()->route('distribuidora.dashboard'),
         5 => redirect()->route('cajera.dashboard'),

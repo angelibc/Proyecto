@@ -87,12 +87,20 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 15px 20px;
             margin-bottom: 15px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
         }
 
         .form-group { display: flex; flex-direction: column; gap: 6px; }
         label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         
         input, select {
+            width: 100%;
             padding: 10px 14px;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -100,6 +108,7 @@
             color: var(--text-main);
             background: #fcfdfe;
             transition: all 0.2s;
+            box-sizing: border-box;
         }
 
         input:focus, select:focus { 
@@ -269,11 +278,11 @@
                                 <label>Línea de Crédito Autorizada</label>
                                 <input type="number" step="0.01" name="distribuidora[linea_credito]" required placeholder="0.00">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="grid-column: span 2;">
                                 <label>Comprobante Domicilio (PDF/Imagen)</label>
                                 <input type="file" name="distribuidora[comprobante_domicilio]" accept=".pdf,.jpg,.jpeg,.png">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="grid-column: span 1;">
                                 <label>Identificación INE (PDF/Imagen)</label>
                                 <input type="file" name="distribuidora[ine]" accept=".pdf,.jpg,.jpeg,.png">
                             </div>
@@ -470,7 +479,7 @@
                 if (res.ok) {
                     mostrarToast('✅ Registro completado con éxito', 'success');
                     setTimeout(() => {
-                        window.location.href = "{{ route('coordinador.dashboard') }}";
+                        window.location.href = "{{ route('coordinador.notificaciones') }}";
                     }, 2000);
                 } else if (res.status === 422) {
                     // Errores de validación de Laravel

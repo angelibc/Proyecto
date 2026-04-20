@@ -152,6 +152,24 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
+    .btn-doc {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f1f5f9;
+        color: #64748b;
+        text-decoration: none;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s;
+    }
+    .btn-doc:hover {
+        background: #3b82f6;
+        color: white;
+        transform: translateY(-2px);
+    }
 </style>
 <body>
     <div class="dashboard-container">
@@ -187,6 +205,7 @@
                                 <th>Línea de Crédito</th>
                                 <th>Puntos</th>
                                 <th>Estado</th>
+                                <th>Documentos</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -223,6 +242,24 @@
                                     <span class="badge {{ $dist->estado == 'activo' ? 'badge-green' : 'badge-red' }}">
                                         {{ $dist->estado }}
                                     </span>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 6px;">
+                                        @php
+                                            $ine = $dist->documentos->where('tipo', 'INE')->first();
+                                            $comprobante = $dist->documentos->where('tipo', 'Comprobante Domicilio')->first();
+                                        @endphp
+                                        @if($ine)
+                                            <a href="{{ \Illuminate\Support\Facades\Storage::disk('spaces')->temporaryUrl($ine->archivo_path, now()->addMinutes(10)) }}" target="_blank" class="btn-doc" title="Ver INE">
+                                                <i data-lucide="contact-2" style="width: 14px;"></i>
+                                            </a>
+                                        @endif
+                                        @if($comprobante)
+                                            <a href="{{ \Illuminate\Support\Facades\Storage::disk('spaces')->temporaryUrl($comprobante->archivo_path, now()->addMinutes(10)) }}" target="_blank" class="btn-doc" title="Ver Comprobante">
+                                                <i data-lucide="home" style="width: 14px;"></i>
+                                            </a>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td>
                                     <button class="btn-action" onclick="abrirModalEditar({{ $dist->id }}, '{{ $dist->estado }}', {{ $dist->categoria_id ?? 1 }}, {{ $dist->linea_credito }})">

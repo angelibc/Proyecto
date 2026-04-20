@@ -176,12 +176,32 @@
                         </td>
                         <td>
                             <div style="display: flex; gap: 8px;">
-                                <a href="{{ asset('storage/' . $cliente->INE) }}" target="_blank" class="btn-doc" title="Ver INE">
-                                    <i data-lucide="contact-2"></i>
-                                </a>
-                                <a href="{{ asset('storage/' . $cliente->comprobante_domicilio) }}" target="_blank" class="btn-doc" title="Ver Comprobante">
-                                    <i data-lucide="home"></i>
-                                </a>
+                                @php
+                                    $ine = $cliente->documentos->where('tipo', 'INE')->first();
+                                    $comprobante = $cliente->documentos->where('tipo', 'Comprobante Domicilio')->first();
+                                @endphp
+
+                                @if($ine)
+                                    <a href="{{ \Illuminate\Support\Facades\Storage::disk('spaces')->temporaryUrl($ine->archivo_path, now()->addMinutes(10)) }}" 
+                                       target="_blank" class="btn-doc" title="Ver INE">
+                                        <i data-lucide="contact-2"></i>
+                                    </a>
+                                @else
+                                    <div class="btn-doc" title="INE No disponible" style="opacity: 0.4; cursor: not-allowed;">
+                                        <i data-lucide="contact-2"></i>
+                                    </div>
+                                @endif
+
+                                @if($comprobante)
+                                    <a href="{{ \Illuminate\Support\Facades\Storage::disk('spaces')->temporaryUrl($comprobante->archivo_path, now()->addMinutes(10)) }}" 
+                                       target="_blank" class="btn-doc" title="Ver Comprobante">
+                                        <i data-lucide="home"></i>
+                                    </a>
+                                @else
+                                    <div class="btn-doc" title="Comprobante No disponible" style="opacity: 0.4; cursor: not-allowed;">
+                                        <i data-lucide="home"></i>
+                                    </div>
+                                @endif
                             </div>
                         </td>
                     </tr>

@@ -150,9 +150,16 @@
                     </a>
                 </li>
                 <p class="menu-label">Sistema</p>
-                 <li>
+                <li>
                     <a href="{{ route('gerente.configuracion') }}" class="{{ request()->routeIs('gerente.configuracion') ? 'active' : '' }}">
                         <i data-lucide="settings"></i> Configuración
+                    </a>
+                </li>
+                @endif
+                @if(auth()->check() && auth()->user()->role_id == 2)
+                <li>
+                    <a href="{{ route('coordinador.notificaciones') }}" class="{{ request()->routeIs('coordinador.notificaciones') ? 'active' : '' }}">
+                        <i data-lucide="bell"></i> Notificaciones
                     </a>
                 </li>
                 @endif

@@ -14,7 +14,7 @@ class DistribuidorasController
 
     public function listaDistribuidoras()
     {
-        $distribuidoras = Distribuidora::whereIn('estado', ['activo', 'moroso'])->with(['usuario.persona', 'categoria'])->paginate(5);
+        $distribuidoras = Distribuidora::whereIn('estado', ['activo', 'moroso'])->with(['usuario.persona', 'categoria', 'documentos'])->paginate(5);
         return view('gerente.distribuidora', compact('distribuidoras'));
     }
 
@@ -28,7 +28,7 @@ class DistribuidorasController
 
     //Esta funcion muestras las distribuidora con el estado en inactivo,
     public function distribuidorasInactivas(){
-        $distribuidoras = Distribuidora::where('estado', 'inactivo')->with('usuario.persona')->get();
+        $distribuidoras = Distribuidora::where('estado', 'inactivo')->with(['usuario.persona', 'documentos'])->get();
 
         return view('gerente.presolicitud', compact('distribuidoras'));
     
@@ -37,7 +37,7 @@ class DistribuidorasController
     public function detalle($id)
     {
         $distribuidora = Distribuidora::where('id', $id)
-            ->with('usuario.persona')
+            ->with(['usuario.persona', 'documentos'])
             ->firstOrFail();
 
         return view('verificador.datos-distribuidora', compact('distribuidora'));
@@ -146,7 +146,7 @@ class DistribuidorasController
 
                 // 3.1 Guardar Documentos en la nueva tabla
                 if ($request->hasFile('distribuidora.comprobante_domicilio')) {
-                    $pathComprobante = $request->file('distribuidora.comprobante_domicilio')->store('documentos/distribuidoras/comprobantes', 'public');
+                    $pathComprobante = $request->file('distribuidora.comprobante_domicilio')->store('documentos/distribuidoras/comprobantes', 'spaces');
                     $distribuidora->documentos()->create([
                         'tipo' => 'Comprobante Domicilio',
                         'archivo_path' => $pathComprobante
@@ -154,7 +154,7 @@ class DistribuidorasController
                 }
 
                 if ($request->hasFile('distribuidora.ine')) {
-                    $pathIne = $request->file('distribuidora.ine')->store('documentos/distribuidoras/ine', 'public');
+                    $pathIne = $request->file('distribuidora.ine')->store('documentos/distribuidoras/ine', 'spaces');
                     $distribuidora->documentos()->create([
                         'tipo' => 'INE',
                         'archivo_path' => $pathIne

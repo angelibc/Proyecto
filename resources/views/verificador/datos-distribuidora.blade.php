@@ -169,6 +169,66 @@
             display: none;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
+        /* Estilos para Documentos */
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .btn-documento {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-documento:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .doc-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .doc-icon {
+            width: 45px;
+            height: 45px;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doc-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .doc-type {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -245,6 +305,42 @@
                     <label>Puntos Iniciales</label>
                     <span>{{ $distribuidora->puntos }} pts</span>
                 </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <p class="section-title">
+                <i data-lucide="file-text" style="width: 20px;"></i>
+                Documentación Digital
+            </p>
+            <div class="doc-grid">
+                @forelse($distribuidora->documentos as $doc)
+                    @php
+                        // Generamos una URL temporal firmada (expira en 10 minutos)
+                        // Esto soluciona el error de Access Denied al ser archivos privados
+                        $url = \Illuminate\Support\Facades\Storage::disk('spaces')->temporaryUrl(
+                            $doc->archivo_path, 
+                            now()->addMinutes(10)
+                        );
+                    @endphp
+                    <a href="{{ $url }}" target="_blank" class="btn-documento">
+                        <div class="doc-info">
+                            <div class="doc-icon">
+                                <i data-lucide="file-digit"></i>
+                            </div>
+                            <div class="doc-text">
+                                <span class="doc-name">{{ $doc->tipo }}</span>
+                                <span class="doc-type">Ver Archivo Adjunto</span>
+                            </div>
+                        </div>
+                        <i data-lucide="external-link" style="color: var(--text-muted); width: 20px;"></i>
+                    </a>
+                @empty
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: var(--text-muted);">
+                        <i data-lucide="alert-circle" style="margin-bottom: 10px; opacity: 0.5;"></i>
+                        <p>No hay documentos digitales disponibles para esta distribuidora.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
 
