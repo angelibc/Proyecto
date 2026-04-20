@@ -31,7 +31,7 @@ class Relacion extends Model
         //RELLENO
         'nombre_empresa',
         'convenio',
-        'cable',
+        'clabe',
     ];
 
     public function detalle_vale(): HasMany{

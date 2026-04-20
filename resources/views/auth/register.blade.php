@@ -148,6 +148,19 @@
         .btn-submit { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
 
+        /* Estilos para errores */
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 4px;
+            display: block;
+        }
+        input.is-invalid, select.is-invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2;
+        }
+
         /* Toast moderno */
         #toast {
             position: fixed; top: 20px; right: 20px;
@@ -180,7 +193,7 @@
                 <div class="step-item" id="s4">4. Filial</div>
             </div>
 
-            <form action="/api/crear/distribuidora" method="POST" id="multiStepForm">
+            <form action="/api/crear/distribuidora" method="POST" id="multiStepForm" enctype="multipart/form-data">
                 @csrf
                 <div class="form-body">
                     <div class="form-page active" id="page1">
@@ -256,6 +269,14 @@
                                 <label>Línea de Crédito Autorizada</label>
                                 <input type="number" step="0.01" name="distribuidora[linea_credito]" required placeholder="0.00">
                             </div>
+                            <div class="form-group">
+                                <label>Comprobante Domicilio (PDF/Imagen)</label>
+                                <input type="file" name="distribuidora[comprobante_domicilio]" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+                            <div class="form-group">
+                                <label>Identificación INE (PDF/Imagen)</label>
+                                <input type="file" name="distribuidora[ine]" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
                             <input type="hidden" name="usuario[sucursal_id]" value="1">
                             <input type="hidden" name="usuario[role_id]" value="4">
                             <input type="hidden" name="distribuidora[categoria_id]" value="1">
@@ -295,9 +316,24 @@
                                 <label>RFC Familiar</label>
                                 <input type="text" name="familiar[RFC]" required maxlength="13">
                             </div>
+                             <div class="form-group">
+                                <label>Teléfono Personal</label>
+                                <input type="number" name="familiar[telefono_personal]" required>
+                            </div>
                             <div class="form-group">
                                 <label>Celular</label>
-                                <input type="text" name="familiar[celular]" required>
+                                <input type="number" name="familiar[celular]" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Sexo Familiar</label>
+                                <select name="familiar[sexo]" required>
+                                    <option value="F">Femenino</option>
+                                    <option value="M">Masculino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha Nac. Familiar</label>
+                                <input type="date" name="familiar[fecha_nacimiento]" required>
                             </div>
                         </div>
                     </div>
@@ -327,6 +363,10 @@
                             <div class="form-group">
                                 <label>Modelo / Año</label>
                                 <input type="text" name="vehiculo[modelo]" required placeholder="Ej. Versa 2022">
+                            </div>
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input type="text" name="vehiculo[color]" required placeholder="Ej. Rojo">
                             </div>
                             <div class="form-group">
                                 <label>Placas</label>
@@ -406,11 +446,16 @@
         function enviarForm(e) {
             if (e) e.preventDefault();
             const form = document.getElementById('multiStepForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
+            const btnSave = document.getElementById('btnSave');
+            
+            // Limpiar errores previos
+            document.querySelectorAll('.error-msg').forEach(el => el.remove());
+            document.querySelectorAll('input, select').forEach(el => el.classList.remove('is-invalid'));
+
             const formData = new FormData(form);
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<i class="animate-spin" data-lucide="loader-2"></i> Procesando...';
+            lucide.createIcons();
 
             fetch('/api/crear/distribuidora', {
                 method: 'POST',
@@ -420,18 +465,86 @@
                 },
                 body: formData
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.res) {
+            .then(async res => {
+                const data = await res.json();
+                if (res.ok) {
                     mostrarToast('✅ Registro completado con éxito', 'success');
-                    setTimeout(() => { window.location.href = '/verificador/notificaciones'; }, 1500);
+                    setTimeout(() => {
+                        window.location.href = "{{ route('coordinador.dashboard') }}";
+                    }, 2000);
+                } else if (res.status === 422) {
+                    // Errores de validación de Laravel
+                    mostrarToast('❌ Revisa los campos marcados en rojo', 'error');
+                    highlightErrors(data.errors);
                 } else {
-                    mostrarToast('❌ ' + data.mensaje, 'error');
+                    mostrarToast('❌ ' + (data.mensaje || 'Error en el servidor'), 'error');
                 }
             })
             .catch(err => {
                 mostrarToast('❌ Error de conexión', 'error');
+            })
+            .finally(() => {
+                btnSave.disabled = false;
+                btnSave.innerHTML = '<i data-lucide="check-circle" style="width: 16px;"></i> Finalizar Registro';
+                lucide.createIcons();
             });
+        }
+
+        function highlightErrors(errors) {
+            let firstErrorPage = null;
+            let errorList = [];
+
+            for (const [key, messages] of Object.entries(errors)) {
+                let nameParts = key.split('.');
+                let selector = nameParts[0];
+                for(let i=1; i<nameParts.length; i++) selector += `[${nameParts[i]}]`;
+                
+                const input = document.querySelector(`[name="${selector}"]`);
+                if (input) {
+                    input.classList.add('is-invalid');
+                    const errorLabel = document.createElement('span');
+                    errorLabel.className = 'error-msg';
+                    errorLabel.textContent = messages[0];
+                    input.parentNode.appendChild(errorLabel);
+                    
+                    const page = input.closest('.form-page');
+                    if (page && !firstErrorPage) {
+                        firstErrorPage = parseInt(page.id.replace('page', ''));
+                    }
+                } else {
+                    // Si el campo no existe en el HTML, lo guardamos para mostrarlo en el toast
+                    errorList.push(`${key}: ${messages[0]}`);
+                }
+            }
+
+            if (errorList.length > 0) {
+                alert("Errores detectados:\n" + errorList.join("\n"));
+            }
+
+            if (firstErrorPage) {
+                goToPage(firstErrorPage);
+            }
+        }
+
+        function goToPage(pageNum) {
+            document.getElementById(`page${current}`).classList.remove('active');
+            document.getElementById(`s${current}`).classList.remove('active');
+            current = pageNum;
+            document.getElementById(`page${current}`).classList.add('active');
+            document.getElementById(`s${current}`).classList.add('active');
+            
+            document.getElementById('btnPrev').style.visibility = current === 1 ? 'hidden' : 'visible';
+            if (current === 4) {
+                document.getElementById('btnNext').style.display = 'none';
+                document.getElementById('btnSave').style.display = 'flex';
+            } else {
+                document.getElementById('btnNext').style.display = 'flex';
+                document.getElementById('btnSave').style.display = 'none';
+            }
+            
+            if (current === 1 && window.leafletMap) {
+                setTimeout(() => window.leafletMap.invalidateSize(), 300);
+            }
         }
 
         function mostrarToast(mensaje, tipo = 'success') {

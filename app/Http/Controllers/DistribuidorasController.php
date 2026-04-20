@@ -91,6 +91,8 @@ class DistribuidorasController
             'distribuidora.domicilio'         => 'required|string',
             'distribuidora.geolocalizacion_lat' => 'required|numeric',
             'distribuidora.geolocalizacion_lng' => 'required|numeric',
+            'distribuidora.comprobante_domicilio' => 'nullable|file|mimes:pdf,jpg,png,jpeg|max:5120',
+            'distribuidora.ine'                  => 'nullable|file|mimes:pdf,jpg,png,jpeg|max:5120',
 
             // Datos del familiar (Persona secundaria)
             'familiar.nombre'            => 'required|string|max:100',
@@ -116,7 +118,7 @@ class DistribuidorasController
         ]);
 
         try {
-            return DB::transaction(function () use ($datos) {
+            return DB::transaction(function () use ($datos, $request) {
                 
                 // 1. Crear Persona Titular
                 $persona = Persona::create($datos['persona']);
@@ -141,6 +143,23 @@ class DistribuidorasController
                     'geolocalizacion_lat' => $datos['distribuidora']['geolocalizacion_lat'],
                     'geolocalizacion_lng' => $datos['distribuidora']['geolocalizacion_lng'],
                 ]);
+
+                // 3.1 Guardar Documentos en la nueva tabla
+                if ($request->hasFile('distribuidora.comprobante_domicilio')) {
+                    $pathComprobante = $request->file('distribuidora.comprobante_domicilio')->store('documentos/distribuidoras/comprobantes', 'public');
+                    $distribuidora->documentos()->create([
+                        'tipo' => 'Comprobante Domicilio',
+                        'archivo_path' => $pathComprobante
+                    ]);
+                }
+
+                if ($request->hasFile('distribuidora.ine')) {
+                    $pathIne = $request->file('distribuidora.ine')->store('documentos/distribuidoras/ine', 'public');
+                    $distribuidora->documentos()->create([
+                        'tipo' => 'INE',
+                        'archivo_path' => $pathIne
+                    ]);
+                }
 
                 // 4. Crear Persona Familiar
                 $personaFamiliar = Persona::create([

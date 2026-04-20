@@ -104,7 +104,7 @@ class ProcesarCorteQuincenal implements ShouldQueue
 
                     'nombre_empresa'       => "PF Prestamo Facil SA",
                     'convenio'             => "1628789",
-                    'cable'                => $dist->clabe ?? '12345678901234567890',
+                    'clabe'                => $dist->clabe ?? '12345678901234567890',
                 ]);
 
                 // 5. VINCULAR TODOS LOS DETALLES A LA MISMA RELACIÓN

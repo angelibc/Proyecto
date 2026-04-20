@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->string('nombre_empresa')->default('Prestamo Fácil SA'); // [cite: 9]
             $table->string('convenio'); // "1628789" [cite: 12]
-            $table->string('cable'); // Corrigiendo 'clabe' 
+            $table->string('clabe'); // Corrigiendo 'clabe' 
 
             $table->timestamps();
         });
