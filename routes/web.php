@@ -9,6 +9,8 @@ use App\Http\Controllers\DetallesValesController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ConfiguracionesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 
 // ================================
 // RUTAS PÚBLICAS
@@ -128,5 +130,17 @@ Route::get('/dashboard', function () {
         default => redirect()->route('login'),
     };
 })->middleware('auth')->name('dashboard');
+
+Route::get('/mfa/verificar', [AuthenticatedSessionController::class, 'mostrarVerificacion'])
+    ->name('mfa.verificar')
+    ->middleware('web');
+
+Route::post('/mfa/verificar', [AuthenticatedSessionController::class, 'verificarCodigo'])
+    ->name('mfa.verificar.post')
+    ->middleware('web');
+
+Route::post('/mfa/reenviar', [AuthenticatedSessionController::class, 'reenviarCodigo'])
+    ->name('mfa.reenviar')
+    ->middleware('web');
 
 require __DIR__.'/auth.php';
